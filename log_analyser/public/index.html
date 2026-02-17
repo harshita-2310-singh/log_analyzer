@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LOGVEIL — Log Analyzer</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<div class="bg-layer"></div>
+<div class="noise"></div>
+<div class="grid-lines"></div>
+<div class="scan-line"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<div class="app">
+  <header>
+    <div class="logo">
+      <div class="logo-icon">
+        <div class="logo-icon-inner">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+      </div>
+      <div class="logo-text">
+        <h1>LOGVEIL</h1>
+        <span>Log Analyzer</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-eyebrow">System Intelligence</div>
+    <h2>Let's Find Errors in<br>Your Log Files</h2>
+    <p>Upload a log file and instantly see all errors, warnings, and issues broken down clearly.</p>
+  </section>
+
+  <div class="upload-zone" id="uploadZone">
+    <div class="upload-icon">
+      <div class="upload-icon-bg">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="16 16 12 12 8 16"></polyline>
+          <line x1="12" y1="12" x2="12" y2="21"></line>
+          <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
+        </svg>
+      </div>
+    </div>
+    <h3>Drop Your Log File Here</h3>
+    <p>Drag & drop or click to browse your system files</p>
+    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="17 8 12 3 7 8"></polyline>
+        <line x1="12" y1="3" x2="12" y2="15"></line>
+      </svg>
+      <span>Choose File</span>
+    </button>
+    <div class="file-types">
+      <span class="file-tag">.log</span>
+      <span class="file-tag">.txt</span>
+      <span class="file-tag">.out</span>
+      <span class="file-tag">.err</span>
+    </div>
+    <input type="file" id="fileInput" accept=".log,.txt,.out,.err,.log.1,.log.2">
+  </div>
+
+  <div class="filename-bar" id="filenameBar">
+    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-width="1.5">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+    </svg>
+    <span class="fname" id="filenameText">—</span>
+    <span class="fsize" id="filesizeText">—</span>
+  </div>
+
+  <div class="stats-row" id="statsRow">
+    <div class="stat-card errors">
+      <div class="stat-label">Errors</div>
+      <div class="stat-value" id="countErrors">0</div>
+      <div class="stat-sub">critical issues</div>
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01"/></svg>
+      </div>
+    </div>
+    <div class="stat-card warnings">
+      <div class="stat-label">Warnings</div>
+      <div class="stat-value" id="countWarnings">0</div>
+      <div class="stat-sub">attention needed</div>
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+    </div>
+    <div class="stat-card info">
+      <div class="stat-label">Info</div>
+      <div class="stat-value" id="countInfo">0</div>
+      <div class="stat-sub">informational</div>
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      </div>
+    </div>
+    <div class="stat-card debug">
+      <div class="stat-label">Debug</div>
+      <div class="stat-value" id="countDebug">0</div>
+      <div class="stat-sub">trace entries</div>
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="charts-row" id="chartsRow">
+    <div class="chart-card" style="grid-column: 1 / -1;">
+      <div class="chart-title">Distribution Overview</div>
+      <div class="vbar-chart">
+        <div class="vbar-group">
+          <div class="vbar-col error">
+            <div class="vbar-wrap">
+              <div class="vbar-fill" id="vbarError"></div>
+            </div>
+            <div class="vbar-val" id="vbarValError">0</div>
+            <div class="vbar-lbl">ERROR</div>
+          </div>
+          <div class="vbar-col warning">
+            <div class="vbar-wrap">
+              <div class="vbar-fill" id="vbarWarning"></div>
+            </div>
+            <div class="vbar-val" id="vbarValWarning">0</div>
+            <div class="vbar-lbl">WARNING</div>
+          </div>
+          <div class="vbar-col info">
+            <div class="vbar-wrap">
+              <div class="vbar-fill" id="vbarInfo"></div>
+            </div>
+            <div class="vbar-val" id="vbarValInfo">0</div>
+            <div class="vbar-lbl">INFO</div>
+          </div>
+          <div class="vbar-col debug">
+            <div class="vbar-wrap">
+              <div class="vbar-fill" id="vbarDebug"></div>
+            </div>
+            <div class="vbar-val" id="vbarValDebug">0</div>
+            <div class="vbar-lbl">DEBUG</div>
+          </div>
+        </div>
+        <!-- Y-axis grid lines -->
+        <div class="vbar-grid">
+          <div class="vbar-gridline"><span class="vbar-ytick" id="ytick100">—</span></div>
+          <div class="vbar-gridline"><span class="vbar-ytick" id="ytick75">—</span></div>
+          <div class="vbar-gridline"><span class="vbar-ytick" id="ytick50">—</span></div>
+          <div class="vbar-gridline"><span class="vbar-ytick" id="ytick25">—</span></div>
+          <div class="vbar-gridline"><span class="vbar-ytick">0</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toolbar" id="toolbar">
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input type="text" placeholder="Search log entries..." id="searchInput">
+    </div>
+    <div class="filter-group">
+      <button class="filter-btn all active" onclick="filterLogs('ALL', this)">All</button>
+      <button class="filter-btn error" onclick="filterLogs('ERROR', this)">Error</button>
+      <button class="filter-btn warning" onclick="filterLogs('WARNING', this)">Warning</button>
+      <button class="filter-btn info" onclick="filterLogs('INFO', this)">Info</button>
+      <button class="filter-btn debug" onclick="filterLogs('DEBUG', this)">Debug</button>
+    </div>
+  </div>
+
+  <div class="log-panel" id="logPanel">
+    <div class="panel-header">
+      <div class="panel-title">
+        <div class="live-dot"></div>
+        Log Stream
+      </div>
+      <div class="panel-meta" id="logMeta">Awaiting analysis...</div>
+    </div>
+    <div class="analyze-progress" id="analyzeProgress">
+      <div class="progress-label">Parsing entries...</div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+    <div class="log-list" id="logList">
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-width="1">
+          <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+          <polyline points="13 2 13 9 20 9"></polyline>
+        </svg>
+        <h3>No Log Loaded</h3>
+        <p>Upload a log file above to begin analysis</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-width="2">
+    <polyline points="20 6 9 17 4 12"></polyline>
+  </svg>
+  <span id="toastMsg">File analyzed successfully</span>
+</div>
+<script src="script.js"></script>
+
+</body>
+</html>

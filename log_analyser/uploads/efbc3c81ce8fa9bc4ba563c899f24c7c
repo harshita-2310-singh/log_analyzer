@@ -1,0 +1,5 @@
+2026-02-14 10:00:00 INFO Server started
+2026-02-14 10:05:00 ERROR Database connection failed
+2026-02-14 10:10:00 ERROR JWT expired
+2026-02-14 10:15:00 ERROR Database connection failed
+2026-02-14 10:20:00 WARN Disk usage high
